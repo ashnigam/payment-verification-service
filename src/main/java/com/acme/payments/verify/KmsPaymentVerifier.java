@@ -17,10 +17,6 @@ import java.nio.charset.StandardCharsets;
  */
 public class KmsPaymentVerifier {
 
-    // Same demo key the payments team signs with (alias/qryptive-demo-signer).
-    static final String PAYMENT_CONFIRMATION_KEY_ARN =
-            "arn:aws:kms:us-west-2:826420459991:key/d49c342a-1e59-4f75-951d-db15a871b8d2";
-
     private final KmsClient kms;
 
     public KmsPaymentVerifier(KmsClient kms) {
@@ -30,7 +26,7 @@ public class KmsPaymentVerifier {
     public boolean verifyConfirmation(String paymentReference, long amountCents, byte[] signature) {
         String payload = paymentReference + ":" + amountCents;
         VerifyRequest request = VerifyRequest.builder()
-                .keyId(PAYMENT_CONFIRMATION_KEY_ARN)
+                .keyId("arn:aws:kms:us-west-2:826420459991:key/d49c342a-1e59-4f75-951d-db15a871b8d2")
                 .message(SdkBytes.fromByteArray(payload.getBytes(StandardCharsets.UTF_8)))
                 .messageType(MessageType.RAW)
                 .signature(SdkBytes.fromByteArray(signature))
